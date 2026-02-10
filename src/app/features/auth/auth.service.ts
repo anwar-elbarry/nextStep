@@ -46,4 +46,8 @@ export class AuthService {
      localStorage.removeItem('user');
      this.router.navigate(['/login'])
   }
+
+  isAuthenticate(){
+   return !!this.currentUser();
+  }
 }
