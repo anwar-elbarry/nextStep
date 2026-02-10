@@ -1,0 +1,5 @@
+<div class="flex flex-wrap gap-4 p-6 justify-center">
+  @for (job of jobsList(); track job.jobTitle){
+    <app-job-card [job]="job" />
+  }
+</div>
