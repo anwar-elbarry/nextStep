@@ -12,5 +12,4 @@ export const routes: Routes = [
     path: 'jobs',
     loadComponent: () => import('./features/jobs/components/job-container/job-container').then(m => m.JobContainer)
   }
-
 ];
