@@ -1,47 +1,72 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment.development';
 import {catchError, filter, find, map, Observable, throwError} from 'rxjs';
 import {JobModel} from './models/job.model';
+import { countryModel } from './models/country.model';
 
 interface ArbetNowResponse {
-  data: any[];
+  results: any[];
+  count:string;
 }
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class JobService {
   private readonly http = inject(HttpClient);
-  private usaJobs = `${environment.usaJobs}`;
-  private arbitNow = `${environment.arbetNow}`;
-  private themuse = `${environment.themuse}`;
+  private adzouna = `${environment.adzouna}`;
+  private adzunaCountries = `${environment.jsonServerUrl}/countries`;
 
-  getArbetNowJobs(): Observable<JobModel[]> {
-    return this.http.get<ArbetNowResponse>(this.arbitNow).pipe(
-      map((response: ArbetNowResponse) => response.data.map(job => this.transformToModel(job)))
+  getJobs(pathVariables:{country:string,page:number},params:any={}): Observable<JobModel[]> {
+
+
+    params.app_id ='95749ce0';
+    params.app_key = 'a515d9f2db46ed9ad7144f18164a9ea1';
+    
+
+    let httpParams = new HttpParams();
+
+    Object.keys(params).forEach(key => {
+      httpParams = httpParams.set(key, params[key]);
+    });
+
+    const url = `${this.adzouna}/jobs/${pathVariables.country}/search/${pathVariables.page}`;
+
+    return this.http.get<ArbetNowResponse>(url, {params}).pipe(
+      map((response: ArbetNowResponse) => response.results.map(job => this.transformToModel(job)))
     );
   }
   private transformToModel(job: any): JobModel {
-    const plainText = job.description.replace(/<[^>]*>/g, '');
     return {
-      id:job.slug,
+      id:job.id,
       jobTitle: job.title,
-      companyName: job.company_name,
-      location: job.location,
-      publicationDate: new Date(job.created_at * 1000).toLocaleDateString(),
+      companyName: job.company.display_name,
+      location: job.location.display_name,
+      publicationDate: job.created,
       description: job.description,
-      descriptionPreview:plainText,
-      fullOfferLink: job.url,
-      salary: job.salary || 'Not specified'
+      descriptionPreview: job.description,
+      fullOfferLink: job.redirect_url,
+      salary: job.salary_min || 'Not specified'
     };
 }
 
-  getJob(id:string): Observable<JobModel> {
-   return this.http.get<ArbetNowResponse>(this.arbitNow).pipe(
+  getJob(id:string,pathVariables:{country:string,page:number},params:any={}): Observable<JobModel> {
+     params.app_id ='95749ce0';
+    params.app_key = 'a515d9f2db46ed9ad7144f18164a9ea1';
+    
+
+    let httpParams = new HttpParams();
+
+    Object.keys(params).forEach(key => {
+      httpParams = httpParams.set(key, params[key]);
+    });
+    const url = `${this.adzouna}/jobs/${pathVariables.country}/search/${pathVariables.page}`;
+
+   return this.http.get<ArbetNowResponse>(url, {params}).pipe(
      map(respose => {
-      const found = respose.data.find(job => job.slug === id);
-        console.log(id);
+      const found = respose.results.find(job => job.id === id);
       return this.transformToModel(found);
      }),
      catchError(err => {
@@ -49,5 +74,9 @@ export class JobService {
         return throwError(() => new Error('Failed to load job details'));
       })
    )
+  }
+
+  getCountries():Observable<countryModel[]>{
+    return this.http.get<countryModel[]>(this.adzunaCountries);
   }
 }
