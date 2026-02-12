@@ -9,8 +9,12 @@ Injectable({
 export const jobDetailsResolver: ResolveFn<JobModel> = (route:ActivatedRouteSnapshot) => {
 
   const id  = route.paramMap.get('id')!;
+  const state = history.state;
+  const country = state?.country || 'us';
+  const page = state?.page || 1;
+  
   const jobService = inject(JobService);
-  console.log(id);
-  return jobService.getJob(id);
+  console.log(id,country,page);
+  return jobService.getJob(id,{country,page});
 
 };
