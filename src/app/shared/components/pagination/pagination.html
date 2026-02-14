@@ -1,0 +1,73 @@
+<div class="flex flex-col items-center gap-4">
+    <!-- Pagination Info -->
+    @if(!simpleMode() && totalElements() > 0) {
+    <div class="text-sm text-gray-600">
+        Showing
+        <span class="font-semibold text-gray-900">{{ (currentPage() - 1) * itemsPerPage + 1 }}</span>
+        -
+        <span class="font-semibold text-gray-900">{{ Math.min(currentPage() * itemsPerPage, totalElements()) }}</span>
+        of
+        <span class="font-semibold text-gray-900">{{ totalElements() }}</span>
+        jobs
+    </div>
+    }
+
+    <!-- Pagination Controls -->
+    <nav class="flex items-center gap-x-4 min-w-max">
+        <!-- Previous Button -->
+        <a (click)="prevPage()" [class.opacity-50]="currentPage() === 1"
+            [class.pointer-events-none]="currentPage() === 1"
+            class="text-gray-500 hover:text-gray-900 p-2 inline-flex items-center gap-2 cursor-pointer"
+            href="javascript:;">
+            <span
+                class="w-10 h-10 rounded-full transition-all duration-150 flex justify-center items-center hover:border hover:border-indigo-600">
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M5.5 1L1.91421 4.58578C1.24755 5.25245 0.914213 5.58579 0.914213 6C0.914213 6.41421 1.24755 6.74755 1.91421 7.41421L5.5 11"
+                        stroke="#4F46E5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </span>
+            <span class="hidden md:inline text-sm font-medium">Previous</span>
+        </a>
+
+        <!-- Simple Mode: Just show current page -->
+        @if(simpleMode()) {
+        <div class="px-4 py-2 text-sm font-medium text-gray-700">
+            Page {{currentPage()}}
+        </div>
+        }
+
+        <!-- Full Mode: Show all page numbers -->
+        @else {
+        @for(page of pages(); track page){
+        @if(isEllipsis(page)){
+        <span class="w-10 h-10 text-gray-500 p-2 inline-flex items-center justify-center">...</span>
+        } @else {
+        <a (click)="goToPage(page)"
+            [class]="isActivePage(page) 
+                ? 'w-10 h-10 bg-indigo-600 text-white p-2 inline-flex items-center justify-center rounded-full transition-all duration-150 hover:bg-indigo-700' 
+                : 'w-10 h-10 text-gray-500 p-2 inline-flex items-center justify-center border border-gray-200 rounded-full transition-all duration-150 hover:text-indigo-900 hover:border-indigo-600 cursor-pointer'"
+            href="javascript:;">
+            {{page}}
+        </a>
+        }
+        }
+        }
+
+        <!-- Next Button -->
+        <a (click)="nextPage()" [class.opacity-50]="simpleMode() ? !hasMore() : currentPage() === totalPages()"
+            [class.pointer-events-none]="simpleMode() ? !hasMore() : currentPage() === totalPages()"
+            class="text-gray-500 hover:text-gray-900 p-2 inline-flex items-center gap-2 cursor-pointer"
+            href="javascript:;">
+            <span class="hidden md:inline text-sm font-medium">Next</span>
+            <span
+                class="w-10 h-10 rounded-full transition-all duration-150 flex justify-center items-center hover:border hover:border-indigo-600">
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M1.5 11L5.08578 7.41421C5.75245 6.74755 6.08579 6.41421 6.08579 6C6.08579 5.58579 5.75245 5.25245 5.08579 4.58579L1.5 1"
+                        stroke="#4F46E5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </span>
+        </a>
+    </nav>
+</div>
