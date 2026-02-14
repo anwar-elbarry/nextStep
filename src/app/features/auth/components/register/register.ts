@@ -2,6 +2,8 @@ import {Component, inject} from '@angular/core';
 import {AuthService} from '../../auth.service';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AuthPage } from '../../../../core/store/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,7 @@ import {Router} from '@angular/router';
   styleUrl: './register.css',
 })
 export class Register {
-    private authService = inject(AuthService);
+    private store = inject(Store);
     private fb = inject(FormBuilder);
     private router = inject(Router);
 
@@ -30,14 +32,8 @@ export class Register {
       console.log('checked',this.registerForm.valid)
         if(this.registerForm.valid){
 
-          this.authService.register(this.registerForm.value).subscribe({
-            next: resp => {
-              console.log('Utilisateur créé avec succès', resp);
-              this.router.navigate(['/login']);
-            },
-            error: err => console.log('error',err)
-          })
+          this.store.dispatch(AuthPage.register({ userData: this.registerForm.value }));
+          }
         }
   }
 
-}
