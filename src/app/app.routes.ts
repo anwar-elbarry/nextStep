@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'favorites',
-    loadComponent: () => import('./features/favorites/components/favorites-list/favorites-list').then(m => m.FavoritesList)
+    loadComponent: () => import('./features/favorites/components/favorites-list/favorites-list').then(m => m.FavoritesList),
+    canActivate: [authGuard]
   }
 ];
