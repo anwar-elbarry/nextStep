@@ -1,6 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { JobModel } from '../../models/job.model';
-import { Router, RouterLink } from "@angular/router";
 import { TimeAgoPipe } from '../../../../shared/pipes/time-ago.pipe';
 import { Store } from '@ngrx/store';
 import { FavoritesOffersPage } from '../../../../core/store/actions/favoritesOffers.actions';
@@ -19,7 +18,6 @@ import { selectFavoriteJobs } from '../../../../core/store/selectors/favoritesOf
 export class JobCard {
 
   private store = inject(Store);
-  private router = inject(Router);
 
   isauthenticated = toSignal(this.store.select(selectIsAuthenticated), { initialValue: false });
 
@@ -39,15 +37,6 @@ export class JobCard {
   job = input<JobModel>();
   country = input<string>();
   page = input<number>();
-
-  getJobDetails(id: string) {
-    this.router.navigate(['/jobs', id], {
-      state: {
-        country: this.country(),
-        page: this.page()
-      }
-    });
-  }
 
   addToFavorites(job: JobModel) {
     // Prevent duplicate favorites

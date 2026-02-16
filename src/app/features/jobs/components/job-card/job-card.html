@@ -1,33 +1,48 @@
-<div (click)="getJobDetails(job()?.id || 'not-found')"
-  class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer relative w-full min-h-[200px] flex flex-col">
+<div
+  class="bg-white border border-gray-200 rounded-lg p-4 hover:border-orange-300 hover:shadow-md transition-all duration-200 relative">
+
   <!-- Bookmark Icon -->
   @if (isauthenticated()) {
   @if (isFavorite()) {
-  <!-- Already in favorites - show filled red bookmark -->
   <button (click)="removeFromFavorites(job()!); $event.stopPropagation()"
-    class="absolute top-5 right-5 p-2 rounded-full text-red-500 hover:text-red-600 hover:bg-gray-100 transition-all duration-200"
+    class="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-100 transition-all duration-200"
     aria-label="Remove from favorites">
-   <i class="fas fa-heart" style="color: red;"></i>
+    <i class="fas fa-bookmark text-orange-500 text-lg"></i>
   </button>
   } @else {
-  <!-- Not in favorites - show outline gray bookmark -->
   <button (click)="addToFavorites(job()!); $event.stopPropagation()"
-    class="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-green-500 hover:bg-gray-100 transition-all duration-200"
+    class="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-100 transition-all duration-200"
     aria-label="Add to favorites">
-    <i class="fas fa-heart" style="color: gray;"></i>
+    <i class="far fa-bookmark text-gray-400 text-lg"></i>
   </button>
   }
   }
 
+  <!-- Content -->
+  <div class="flex gap-3 pr-8">
+    <!-- Company Logo Placeholder -->
+    <div
+      class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+      {{ job()?.companyName?.charAt(0) || 'C' }}
+    </div>
 
-  <!-- Company Name -->
-  <h3 class="text-base font-semibold text-gray-900 mb-2 pr-8">{{ job()?.companyName }}</h3>
+    <!-- Job Info -->
+    <div class="flex-1 min-w-0">
+      <!-- Job Title -->
+      <h3 class="text-base font-semibold text-gray-900 mb-1 truncate">
+        {{ job()?.jobTitle }}
+      </h3>
 
-  <!-- Job Title -->
-  <h4 class="text-xl font-bold text-gray-900 mb-3 leading-tight">{{ job()?.jobTitle }}</h4>
+      <!-- Company & Location -->
+      <p class="text-sm text-gray-600 mb-2">
+        {{ job()?.companyName }} • {{ job()?.location }}
+      </p>
 
-  <!-- Location -->
-  <p class="text-sm text-gray-600 mb-3">{{ job()?.location }}</p>
-  <!-- Posted Date -->
-  <p class="text-sm text-gray-500">{{ job()?.publicationDate | timeAgo }}</p>
+      <!-- Footer -->
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-500">{{ job()?.publicationDate | timeAgo }}</span>
+        <span class="font-semibold text-gray-900">$ {{ job()?.salary }}</span>
+      </div>
+    </div>
+  </div>
 </div>
