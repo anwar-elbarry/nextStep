@@ -1,35 +1,49 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
 import { JobModel } from '../../models/job.model';
 import { JobService } from '../../job.service';
 import { JobCard } from "../job-card/job-card";
-import { SearchFilterJob } from "../search-filter-job/search-filter-job";
 import { Pagination } from "../../../../shared/components/pagination/pagination";
 
 @Component({
   selector: 'app-job-list',
   standalone: true,
-  imports: [JobCard, SearchFilterJob, Pagination],
+  imports: [JobCard, Pagination],
   templateUrl: './job-list.html',
   styleUrl: './job-list.css',
 })
 export class JobList implements OnInit {
   private jobService = inject(JobService);
 
+  // Input signals from parent
+  country = input<string>('us');
+  searchQuery = input<string>('');
+  page = input<number>(1);
+
+  // Output events
+  jobSelected = output<JobModel>();
+  pageChange = output<number>();
+  stateUpdate = output<{ totalPages: number, totalJobs: number, loading: boolean, error: string | null }>();
+
   // State signals
   totalPages = signal<number>(1);
   totalJobs = signal<number>(0);
   jobsList = signal<JobModel[]>([]);
-  
-  countries = signal<{ code: string, name: string }[]>([]);
-  country = signal('us');
-  page = signal(1);
-  searchQuery = signal<string>('');
   loading = signal(false);
   error = signal<string | null>(null);
 
+  constructor() {
+    // Watch for input changes and refetch jobs
+    effect(() => {
+      const country = this.country();
+      const searchQuery = this.searchQuery();
+      const page = this.page();
+      // Trigger getJobs when inputs change
+      this.getJobs();
+    });
+  }
+
   ngOnInit() {
     this.getJobs();
-    this.getCountries();
   }
 
   getJobs() {
@@ -57,6 +71,14 @@ export class JobList implements OnInit {
 
         this.loading.set(false);
 
+        // Emit state update to parent
+        this.stateUpdate.emit({
+          totalPages: response.TotalPages,
+          totalJobs: response.count,
+          loading: false,
+          error: null
+        });
+
         console.log(`Loaded ${response.results.length} jobs for ${this.country()}, page ${this.page()}`);
       },
       error: (err) => {
@@ -64,31 +86,20 @@ export class JobList implements OnInit {
         this.error.set('Failed to load jobs. Please try again.');
         this.loading.set(false);
         this.jobsList.set([]);
+
+        // Emit error state to parent
+        this.stateUpdate.emit({
+          totalPages: 1,
+          totalJobs: 0,
+          loading: false,
+          error: 'Failed to load jobs. Please try again.'
+        });
       }
     });
   }
 
-  getCountries() {
-    this.jobService.getCountries().subscribe({
-      next: (countriesList) => {
-        this.countries.set(countriesList);
-        console.log(`Loaded ${countriesList.length} countries`);
-      },
-      error: (err) => {
-        console.error('Error fetching countries:', err);
-      }
-    });
-  }
 
-  handleSearch(criteria: { query: string, country: string }) {
-    this.country.set(criteria.country);
-    this.searchQuery.set(criteria.query);
-    this.page.set(1); // Reset to page 1 on new search
-    this.getJobs();
-  }
-
-  handlePageChange(page: number) {
-    this.page.set(page);
-    this.getJobs();
+  handleJobClick(job: JobModel) {
+    this.jobSelected.emit(job);
   }
 }
