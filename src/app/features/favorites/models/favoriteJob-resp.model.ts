@@ -4,5 +4,6 @@ export interface FavoriteJobRespModel {
     offerId: string,
     title: string,
     company: string,
-    location: string
+    location: string,
+    country: string
 }
