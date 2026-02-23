@@ -1,5 +1,6 @@
 import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
@@ -36,5 +37,5 @@ export const appConfig: ApplicationConfig = {
         persist: true,
       },
     }),
-  ]
+]
 };
