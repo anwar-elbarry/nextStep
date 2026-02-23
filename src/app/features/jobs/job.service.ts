@@ -39,7 +39,7 @@ export class JobService {
       map((response: any) => {
         const totalPages = Math.ceil(response.count / 10);
         const jobs = response.results.map((job: any) => this.transformToModel(job));
-        console.log(response);
+        
         return {
           TotalPages: totalPages,
           results: jobs,
