@@ -87,5 +87,23 @@ export const authReducer = createReducer(
     })),
     on(AuthApi.logoutSuccess, () => ({
         ...initialState,
+    })),
+
+    // ── Update Profile ──
+    on(AuthPage.updateProfile, (state) => ({
+        ...state,
+        isLoading: true,
+        error: null,
+    })),
+    on(AuthApi.updateProfileSuccess, (state, action) => ({
+        ...state,
+        user: action.user,
+        isLoading: false,
+        error: null,
+    })),
+    on(AuthApi.updateProfileFailure, (state, action) => ({
+        ...state,
+        isLoading: false,
+        error: action.error,
     }))
 );

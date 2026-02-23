@@ -106,4 +106,33 @@ export class AuthEffects {
             map(() => AuthApi.logoutSuccess())
         )
     );
+
+    // ── Update Profile ──
+    updateProfile$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthPage.updateProfile),
+            switchMap((action) =>
+                this.authService.updateUser(action.id, action.data).pipe(
+                    map((user) => {
+                        const { password, ...userWithoutPassword } = user;
+                        localStorage.setItem('user', JSON.stringify(userWithoutPassword));
+                        return AuthApi.updateProfileSuccess({ user: userWithoutPassword });
+                    }),
+                    catchError((error) => of(
+                        AuthApi.updateProfileFailure({ error: error.message || 'Update failed' })
+                    ))
+                )
+            )
+        )
+    );
+
+    updateProfileSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthApi.updateProfileSuccess),
+            tap(() => {
+                this.alertService.success('Profile updated successfully');
+            })
+        ),
+        { dispatch: false }
+    );
 }

@@ -10,6 +10,7 @@ export const AuthPage = createActionGroup({
         'Register': props<{ userData: RegisterModel }>(),
         'Logout': emptyProps(),
         'Check Auth': emptyProps(),
+        'Update Profile': props<{ id: string; data: Partial<User> }>(),
     }
 });
 
@@ -30,5 +31,9 @@ export const AuthApi = createActionGroup({
         // ── Check Auth ──
         'Check Auth Success': props<{ user: User }>(),
         'Check Auth Failure': emptyProps(),
+
+        // ── Update Profile ──
+        'Update Profile Success': props<{ user: User }>(),
+        'Update Profile Failure': props<{ error: string }>(),
     }
 });
