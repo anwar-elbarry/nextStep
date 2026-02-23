@@ -1,35 +1,32 @@
-import { Component, inject, input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, input, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FavoriteJobRespModel } from '../../models/favoriteJob-resp.model';
 import { FavoritesOffersPage } from '../../../../core/store/actions/favoritesOffers.actions';
+import { FavjobDetails } from '../favjob-details/favjob-details';
 
 @Component({
   selector: 'app-favorites-card',
-  imports: [],
+  imports: [FavjobDetails],
   templateUrl: './favorites-card.html',
   styleUrl: './favorites-card.css',
 })
 export class FavoritesCard {
   private store = inject(Store);
-  private router = inject(Router);
 
   // Input property for favorite job data
   favorite = input<FavoriteJobRespModel>();
 
-  // Navigate to job details page using the offerId
-  getJobDetails(offerId: string) {
-    const fav = this.favorite();
-    if (!fav) return;
+  // Popup state
+  showDetails = signal(false);
 
-    const country = fav.location;
+  // Open job details popup
+  openDetails() {
+    this.showDetails.set(true);
+  }
 
-    this.router.navigate(['/jobs',country, offerId], {
-      state: {
-        country: country,
-        page: 1
-      }
-    });
+  // Close job details popup
+  closeDetails() {
+    this.showDetails.set(false);
   }
 
   // Remove job from favorites
