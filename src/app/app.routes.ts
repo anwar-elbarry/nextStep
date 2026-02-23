@@ -21,7 +21,7 @@ export const routes: Routes = [
     path: 'favorites',
     loadComponent: () => import('./features/favorites/components/favorites-list/favorites-list').then(m => m.FavoritesList),
     canActivate: [authGuard]
-  },{
+  }, {
     path: 'applications',
     loadComponent: () => import('./features/applications/components/application-list/application-list.component').then(m => m.ApplicationListComponent),
     canActivate: [authGuard]
@@ -30,5 +30,9 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () => import('./features/profile/profile').then(m => m.Profile),
     canActivate: [authGuard]
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./features/not-found/not-found').then(m => m.NotFound)
   }
 ];
