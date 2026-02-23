@@ -1,22 +1,7 @@
 <div class="h-full flex flex-col bg-white">
   <!-- Header Section -->
   <div class="p-6 border-b border-gray-200">
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">My Jobs</h2>
-
-    <!-- Tabs -->
-    <div class="flex gap-4 mb-4">
-      <button class="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition">
-        All Jobs
-      </button>
-      <button
-        class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition">
-        Saved Jobs
-      </button>
-      <button
-        class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition">
-        Jobs Applied
-      </button>
-    </div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">Jobs</h2>
 
     <!-- Job Count and Sort -->
     <div class="flex items-center justify-between">
@@ -26,12 +11,13 @@
       <div class="flex items-center gap-2">
         <span class="text-sm text-gray-600">Sort by</span>
         <select
-          class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-orange-500">
-          <option>Newest Post</option>
-          <option>Oldest Post</option>
-          <option>Salary: High to Low</option>
-          <option>Salary: Low to High</option>
-        </select>
+  (change)="onSortChange($event)"
+  class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+  <option value="newest">Newest Post</option>
+  <option value="oldest">Oldest Post</option>
+  <option value="salary_desc">Salary: High to Low</option>
+  <option value="salary_asc">Salary: Low to High</option>
+</select>
       </div>
     </div>
   </div>
@@ -40,7 +26,7 @@
   @if (loading()) {
   <div class="flex-1 flex items-center justify-center p-8">
     <div class="text-center">
-      <div class="w-12 h-12 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin mx-auto mb-4">
+      <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4">
       </div>
       <p class="text-gray-600">Loading jobs...</p>
     </div>
@@ -57,7 +43,7 @@
       </svg>
       <h3 class="text-lg font-semibold text-gray-800 mb-2">Error loading jobs</h3>
       <p class="text-gray-600 mb-4">{{ error() }}</p>
-      <button (click)="getJobs()" class="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition">
+      <button (click)="getJobs()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
         Try Again
       </button>
     </div>
@@ -67,7 +53,7 @@
   <!-- Jobs List -->
   @else {
   <div class="flex-1 overflow-y-auto p-6 space-y-4">
-    @for (job of jobsList(); track job.id) {
+    @for (job of sortedJobs(); track job.id) {
     <app-job-card [job]="job" [country]="country()" [page]="page()" (click)="handleJobClick(job)"
       class="cursor-pointer block" />
     }
@@ -86,7 +72,7 @@
   </div>
 
   <!-- Pagination -->
-  @if (jobsList().length > 0) {
+  @if (sortedJobs().length > 0) {
   <div class="border-t border-gray-200 p-4">
     <app-pagination [currentPage]="page()" [totalPages]="totalPages()" [totalElements]="totalJobs()"
       (pageChange)="pageChange.emit($event)" />

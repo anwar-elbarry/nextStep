@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, output, signal } from '@angular/core';
 import { JobModel } from '../../models/job.model';
 import { JobService } from '../../job.service';
 import { JobCard } from "../job-card/job-card";
@@ -30,6 +30,25 @@ export class JobList implements OnInit {
   jobsList = signal<JobModel[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+
+  sortBy = signal<string>('newest');
+
+
+sortedJobs = computed(() => {
+  const jobs = [...this.jobsList()];
+  switch (this.sortBy()) {
+    case 'newest':
+      return jobs.sort((a, b) => new Date(b.publicationDate).getTime() - new Date(a.publicationDate).getTime());
+    case 'oldest':
+      return jobs.sort((a, b) => new Date(a.publicationDate).getTime() - new Date(b.publicationDate).getTime());
+    case 'salary_desc':
+      return jobs.sort((a, b) => (Number(b.salary) || 0) - (Number(a.salary) || 0));
+    case 'salary_asc':
+      return jobs.sort((a, b) => (Number(a.salary) || 0) - (Number(b.salary) || 0));
+    default:
+      return jobs;
+  }
+});
 
   constructor() {
     // Watch for input changes and refetch jobs
@@ -101,5 +120,10 @@ export class JobList implements OnInit {
 
   handleJobClick(job: JobModel) {
     this.jobSelected.emit(job);
+  }
+
+  onSortChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    this.sortBy.set(value);
   }
 }
