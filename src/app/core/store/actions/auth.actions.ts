@@ -11,6 +11,7 @@ export const AuthPage = createActionGroup({
         'Logout': emptyProps(),
         'Check Auth': emptyProps(),
         'Update Profile': props<{ id: string; data: Partial<User> }>(),
+        'Remove User': props<{ id: string }>()
     }
 });
 
@@ -35,5 +36,9 @@ export const AuthApi = createActionGroup({
         // ── Update Profile ──
         'Update Profile Success': props<{ user: User }>(),
         'Update Profile Failure': props<{ error: string }>(),
+
+        // ── Remove User ──
+        'Remove User Success': emptyProps(),
+        'Remove User Failure': props<{ error: string }>(),
     }
 });

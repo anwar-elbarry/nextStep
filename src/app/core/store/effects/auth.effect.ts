@@ -135,4 +135,33 @@ export class AuthEffects {
         ),
         { dispatch: false }
     );
+
+    // ── Remove User ──
+    removeUser$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthPage.removeUser),
+            switchMap((action) =>
+                this.authService.deleteUser(action.id).pipe(
+                    map(() => {
+                        localStorage.removeItem('user');
+                        return AuthApi.removeUserSuccess();
+                    }),
+                    catchError((error) => of(
+                        AuthApi.removeUserFailure({ error: error.message || 'Failed to delete account' })
+                    ))
+                )
+            )
+        )
+    );
+
+    removeUserSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthApi.removeUserSuccess),
+            tap(() => {
+                this.alertService.success('Account deleted successfully');
+                this.router.navigate(['/login']);
+            })
+        ),
+        { dispatch: false }
+    );
 }

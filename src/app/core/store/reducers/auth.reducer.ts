@@ -105,5 +105,20 @@ export const authReducer = createReducer(
         ...state,
         isLoading: false,
         error: action.error,
+    })),
+
+    // ── Remove User ──
+    on(AuthPage.removeUser, (state) => ({
+        ...state,
+        isLoading: true,
+        error: null,
+    })),
+    on(AuthApi.removeUserSuccess, () => ({
+        ...initialState,
+    })),
+    on(AuthApi.removeUserFailure, (state, action) => ({
+        ...state,
+        isLoading: false,
+        error: action.error,
     }))
 );
