@@ -1,0 +1,112 @@
+/* ============================================
+   Home Page Styles — Animations & Effects
+   ============================================ */
+
+/* ---- Hero background blobs ---- */
+.hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: blobFloat 20s ease-in-out infinite;
+}
+
+.hero-blob--1 {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    top: -10%;
+    right: -5%;
+    animation-delay: 0s;
+}
+
+.hero-blob--2 {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    bottom: -5%;
+    left: -5%;
+    animation-delay: -7s;
+}
+
+.hero-blob--3 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    top: 40%;
+    left: 30%;
+    animation-delay: -14s;
+}
+
+@keyframes blobFloat {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(30px, -40px) scale(1.05);
+    }
+
+    50% {
+        transform: translate(-20px, 20px) scale(0.95);
+    }
+
+    75% {
+        transform: translate(10px, 30px) scale(1.02);
+    }
+}
+
+/* ---- Floating job cards ---- */
+.floating-card {
+    position: absolute;
+    animation: floatCard 6s ease-in-out infinite;
+}
+
+.floating-card--1 {
+    top: 0;
+    left: 0;
+    animation-delay: 0s;
+}
+
+.floating-card--2 {
+    top: 120px;
+    left: 80px;
+    animation-delay: -2s;
+}
+
+.floating-card--3 {
+    top: 240px;
+    left: 20px;
+    animation-delay: -4s;
+}
+
+@keyframes floatCard {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* ---- Fade-in animation ---- */
+.animate-fade-in {
+    animation: fadeIn 1s ease-out both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
