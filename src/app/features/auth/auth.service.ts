@@ -54,4 +54,8 @@ export class AuthService {
   updateUser(id: string, data: Partial<User>): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/${id}`, data);
   }
+
+  deleteUser(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
