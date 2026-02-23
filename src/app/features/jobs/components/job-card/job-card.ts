@@ -69,7 +69,8 @@ export class JobCard {
       offerId: job.id,
       title: job.jobTitle,
       company: job.companyName,
-      location: job.location
+      location: job.location,
+      country: this.country() || 'us'
     };
   }
 
