@@ -9,13 +9,17 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./features/auth/components/login/login').then(m => m.Login)
-  },{
+  }, {
     path: 'jobs',
     loadChildren: () => import('./features/jobs/job.routers').then(m => m.jobRouter)
   },
   {
     path: 'favorites',
     loadComponent: () => import('./features/favorites/components/favorites-list/favorites-list').then(m => m.FavoritesList),
+    canActivate: [authGuard]
+  },{
+    path: 'applications',
+    loadComponent: () => import('./features/applications/components/application-list/application-list.component').then(m => m.ApplicationListComponent),
     canActivate: [authGuard]
   }
 ];

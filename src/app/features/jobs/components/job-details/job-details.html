@@ -23,32 +23,26 @@
       </div>
     </div>
 
-    <!-- Tags -->
-    <div class="flex flex-wrap gap-2 mb-4">
-      <span class="px-3 py-1.5 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg">
-        Direct Employment
-      </span>
-      <span class="px-3 py-1.5 bg-green-100 text-green-700 text-sm font-medium rounded-lg">
-        Full time
-      </span>
-      <span class="px-3 py-1.5 bg-purple-100 text-purple-700 text-sm font-medium rounded-lg">
-        Remote
-      </span>
-      <span class="px-3 py-1.5 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg">
-        4-6 Years
-      </span>
-    </div>
-
     <!-- Time Posted -->
     <p class="text-sm text-gray-600 mb-4">
       {{job()?.publicationDate | timeAgo}}
     </p>
-
-    <!-- Apply Button -->
-    <button
+  @if (isAuthenticated()) {
+    @if (!this.isTracked()) {
+      <button
+      (click)="trackApplication()"
       class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-md hover:shadow-lg">
-      Apply
-    </button>
+      Follow this application
+    </button> 
+    }@else {
+<button
+      disabled
+      class="w-full bg-gray-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-md opacity-30">
+      you followed this application
+    </button> 
+    }
+       
+  }
   </div>
 
   <!-- Job Overview Section -->
@@ -74,32 +68,6 @@
       </div>
     </div>
     }
-
-    <!-- Key Responsibilities (Static for now) -->
-    <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-center">
-      <i class="fas fa-tasks text-orange-500 mr-2"></i>
-      Key Responsibilities
-    </h3>
-    <ul class="space-y-2 text-gray-700 mb-6">
-      <li class="flex items-start">
-        <i class="fas fa-check-circle text-orange-500 mr-2 mt-1"></i>
-        <span>Define and execute product strategies, roadmaps, and goals in alignment with business objectives.</span>
-      </li>
-      <li class="flex items-start">
-        <i class="fas fa-check-circle text-orange-500 mr-2 mt-1"></i>
-        <span>Collaborate with engineering, design, and marketing teams to develop and launch high-quality
-          products.</span>
-      </li>
-      <li class="flex items-start">
-        <i class="fas fa-check-circle text-orange-500 mr-2 mt-1"></i>
-        <span>Conduct market research and gather customer insights to inform product decisions.</span>
-      </li>
-      <li class="flex items-start">
-        <i class="fas fa-check-circle text-orange-500 mr-2 mt-1"></i>
-        <span>Manage the product lifecycle, from ideation to release and ongoing improvements.</span>
-      </li>
-    </ul>
-
     <!-- View Full Offer Link -->
     <a [href]="job()?.fullOfferLink" target="_blank"
       class="inline-flex items-center text-orange-600 hover:text-orange-700 font-semibold">

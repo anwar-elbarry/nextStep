@@ -7,6 +7,10 @@ import { FavoriteJobReqModel } from '../../../favorites/models/favoriteJob-req.m
 import { selectIsAuthenticated, selectUserId } from '../../../../core/store/selectors/auth.selectors';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { selectFavoriteJobs } from '../../../../core/store/selectors/favoritesOffers.selector';
+import { ApplicationActions } from '../../../../core/store/actions/application.actions';
+import { selectIsJobTracked } from '../../../../core/store/selectors/application.selectors';
+import { ApplicationReqModel } from '../../../applications/models/applicationReq.model';
+import { ApplicationStatus } from '../../../applications/models/applicationStatus.enum';
 
 @Component({
   selector: 'app-job-card',
@@ -29,6 +33,13 @@ export class JobCard {
     const favorites = this.favoriteJobs();
     const jobId = this.job()?.id;
     return favorites?.some(fav => fav.offerId === jobId) ?? false;
+  });
+
+  // Computed signal to check if current job is tracked as application
+  isTracked = computed(() => {
+    const jobId = this.job()?.id;
+    if (!jobId) return false;
+    return toSignal(this.store.select(selectIsJobTracked(jobId)), { initialValue: false })();
   });
 
   // Get user ID directly as a signal
@@ -59,6 +70,29 @@ export class JobCard {
       title: job.jobTitle,
       company: job.companyName,
       location: job.location
+    };
+  }
+
+  trackApplication(job: JobModel) {
+    if (this.isTracked()) {
+      console.warn('Job already tracked');
+      return;
+    }
+    const application = this.transformToApplication(job);
+    this.store.dispatch(ApplicationActions.addApplication({ application }));
+  }
+
+  transformToApplication(job: JobModel): ApplicationReqModel {
+    return {
+      userId: this.userId(),
+      offerId: job.id,
+      apiSource: 'adzuna',
+      title: job.jobTitle,
+      company: job.companyName,
+      location: job.location,
+      url: job.fullOfferLink || '',
+      status: ApplicationStatus.PENDING,
+      notes: ''
     };
   }
 }

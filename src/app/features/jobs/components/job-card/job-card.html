@@ -5,15 +5,15 @@
   @if (isauthenticated()) {
   @if (isFavorite()) {
   <button (click)="removeFromFavorites(job()!); $event.stopPropagation()"
-    class="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-100 transition-all duration-200"
-    aria-label="Remove from favorites">
-    <i class="fas fa-bookmark text-orange-500 text-lg"></i>
+     class="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-100 transition-all duration-200"
+     aria-label="Remove from favorites">
+          <i class="fas fa-heart" style="color: red;"></i>
   </button>
   } @else {
   <button (click)="addToFavorites(job()!); $event.stopPropagation()"
     class="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-100 transition-all duration-200"
-    aria-label="Add to favorites">
-    <i class="far fa-bookmark text-gray-400 text-lg"></i>
+     aria-label="add to favorites">
+          <i class="fas fa-heart" style="color: rgba(207, 206, 206, 0.545);"></i>
   </button>
   }
   }

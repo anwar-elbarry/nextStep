@@ -9,6 +9,8 @@ import { FavoritesOffersEffects } from './core/store/effects/favoritesOffers.eff
 import { authReducer } from './core/store/reducers/auth.reducer';
 import { AuthEffects } from './core/store/effects/auth.effect';
 import { alertReducer } from './core/store/reducers/alert.reducer';
+import { applicationReducer } from './core/store/reducers/application.reducer';
+import { ApplicationEffects } from './core/store/effects/application.effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient } from '@angular/common/http';
 
@@ -20,9 +22,10 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       favoritesOffers: favoriteJobsReducer,
       auth: authReducer,
-      alerts: alertReducer
+      alerts: alertReducer,
+      applications: applicationReducer
     }),
-    provideEffects(FavoritesOffersEffects, AuthEffects),
+    provideEffects(FavoritesOffersEffects, AuthEffects, ApplicationEffects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
