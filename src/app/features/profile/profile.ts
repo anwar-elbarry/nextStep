@@ -81,4 +81,14 @@ export class Profile implements OnInit {
     if (!u) return '?';
     return (u.firstName?.charAt(0) || '') + (u.lastName?.charAt(0) || '');
   }
+
+  deleteAccount() {
+    const confirmed = confirm('Are you sure you want to delete your account? This action cannot be undone.');
+    if (!confirmed) return;
+
+    const u = this.user();
+    if (!u) return;
+
+    this.store.dispatch(AuthPage.removeUser({ id: u.id }));
+  }
 }

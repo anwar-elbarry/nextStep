@@ -176,5 +176,23 @@
             </div>
             }
         </div>
+
+        <!-- Danger Zone -->
+        @if (!isEditing()) {
+        <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-8 mt-6 border border-red-100">
+            <h2 class="text-lg font-bold text-red-600 mb-2 flex items-center gap-2">
+                <i class="fas fa-exclamation-triangle"></i>
+                Danger Zone
+            </h2>
+            <p class="text-sm text-gray-500 mb-4">
+                Once you delete your account, there is no going back. Please be certain.
+            </p>
+            <button (click)="deleteAccount()" [disabled]="loading()"
+                class="inline-flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer">
+                <i class="fas fa-trash-alt text-sm"></i>
+                Delete Account
+            </button>
+        </div>
+        }
     </div>
 </div>
