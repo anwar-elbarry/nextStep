@@ -12,13 +12,14 @@ import { alertReducer } from './core/store/reducers/alert.reducer';
 import { applicationReducer } from './core/store/reducers/application.reducer';
 import { ApplicationEffects } from './core/store/effects/application.effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { errorInterceptor } from './core/interceptores/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([errorInterceptor])),
     provideStore({
       favoritesOffers: favoriteJobsReducer,
       auth: authReducer,
@@ -36,5 +37,5 @@ export const appConfig: ApplicationConfig = {
         persist: true,
       },
     }),
-]
+  ]
 };
