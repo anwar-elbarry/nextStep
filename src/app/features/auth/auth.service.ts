@@ -50,4 +50,8 @@ export class AuthService {
   currentUser(): Observable<User | null> {
     return this.currentUser$;
   }
+
+  updateUser(id: string, data: Partial<User>): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/${id}`, data);
+  }
 }
