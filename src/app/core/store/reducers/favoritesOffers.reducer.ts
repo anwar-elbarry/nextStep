@@ -1,17 +1,17 @@
 import { createReducer, on } from "@ngrx/store";
 import { FavoritesOffersApi, FavoritesOffersPage } from "../actions/favoritesOffers.actions";
-import { FavoriteJobModel } from "../../../features/favorites/models/favoriteJob.model";
+import { FavoriteJobRespModel } from "../../../features/favorites/models/favoriteJob-resp.model";
 
 export interface FavoritesJobsState {
-        isLoading: boolean;
-        jobs: FavoriteJobModel[];
-        error: string | null;
+    isLoading: boolean;
+    jobs: FavoriteJobRespModel[];
+    error: string | null;
 }
 
 export const initialState: FavoritesJobsState = {
-        isLoading: false,
-        jobs: [],
-        error: '',
+    isLoading: false,
+    jobs: [],
+    error: '',
 };
 
 export const favoriteJobsReducer = createReducer(
@@ -70,13 +70,13 @@ export const favoriteJobsReducer = createReducer(
         error: action.error,
     })),
 
-//     on(loading, (state, action) => ({
-//         ...state,
-//         isLoading: action.isLoading
-//     })),
-//     on(error, (state, action) => ({
-//         ...state,
-//         error: action.error
-//     }))
+    //     on(loading, (state, action) => ({
+    //         ...state,
+    //         isLoading: action.isLoading
+    //     })),
+    //     on(error, (state, action) => ({
+    //         ...state,
+    //         error: action.error
+    //     }))
 );
 

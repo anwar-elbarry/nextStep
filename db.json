@@ -6,8 +6,193 @@
       "lastName": "El barry",
       "email": "elbarryanwar37@example.com",
       "password": "Jppp5734"
+    },
+    {
+      "id": "2c6b",
+      "firstName": "anass",
+      "lastName": "latifi",
+      "email": "anass@gmail.com",
+      "password": "anass@gmail.com"
     }
   ],
-  "favoritesOffers": [],
-  "applications": []
+  "favoritesOffers": [
+    {
+      "id": "3feb",
+      "userId": "2c6b",
+      "offerId": "5621306516",
+      "title": "Instacart Delivery Driver - Flexible Hours",
+      "company": "Instacart Shoppers",
+      "location": "Dunkirk, Calvert County"
+    },
+    {
+      "id": "bc8f",
+      "userId": "2c6b",
+      "offerId": "5608602485",
+      "title": "Regional Class A Drivers",
+      "company": "Premier Transportation",
+      "location": "Ina, Jersey County"
+    },
+    {
+      "id": "7a75",
+      "userId": "2c6b",
+      "offerId": "5428709894",
+      "title": "Residential Youth Caregiver - Relocation to Hershey, PA Required",
+      "company": "Milton Hershey School",
+      "location": "Lou Del, Monroe County"
+    },
+    {
+      "id": "d6d7",
+      "userId": "dc59",
+      "offerId": "5608602485",
+      "title": "Regional Class A Drivers",
+      "company": "Premier Transportation",
+      "location": "Ina, Jersey County"
+    },
+    {
+      "id": "79c8",
+      "userId": "dc59",
+      "offerId": "5609896846",
+      "title": "AI & Applications Developer",
+      "company": "Uniland Development Corp",
+      "location": "Buffalo, Erie County"
+    },
+    {
+      "id": "7c97",
+      "userId": "dc59",
+      "offerId": "5608431009",
+      "title": "Dietitian",
+      "company": "Ascension St. John Rehabilitation Hospital, an affiliate of Encompass Health - Owasso",
+      "location": "Wagoner, Wagoner County"
+    }
+  ],
+  "applications": [
+    {
+      "userId": "dc59",
+      "offerId": "5428708399",
+      "apiSource": "adzuna",
+      "title": "House Parents - Relocation to Hershey, PA Required",
+      "company": "Milton Hershey School",
+      "location": "Geneva, Ontario County",
+      "url": "https://www.adzuna.com/land/ad/5428708399?se=jsXhulwL8RGnuMGs4_snbA&utm_medium=api&utm_source=95749ce0&v=771E27515EB26EEE15564BA579ACA26839C90562",
+      "status": "rejected",
+      "notes": "awdiiii\n",
+      "id": "91c0"
+    },
+    {
+      "userId": "dc59",
+      "offerId": "5616775634",
+      "apiSource": "adzuna",
+      "title": "Senior Full Stack Developer Javascript (Node/React)",
+      "company": "Rule14",
+      "location": "Santa Monica, Los Angeles County",
+      "url": "https://www.adzuna.com/land/ad/5616775634?se=1mKhr8YM8RG1jZ7dBKdDNw&utm_medium=api&utm_source=95749ce0&v=259424190E0CFE9ACD006F845AD1CC7882365586",
+      "status": "pending",
+      "notes": "",
+      "id": "6bb4"
+    },
+    {
+      "id": "9f0b",
+      "userId": "dc59",
+      "offerId": "5616775634",
+      "apiSource": "adzuna",
+      "title": "Senior Full Stack Developer Javascript (Node/React)",
+      "company": "Rule14",
+      "location": "Santa Monica, Los Angeles County",
+      "url": "https://www.adzuna.com/land/ad/5616775634?se=PI9jS8cM8RGqkLdYEfbDfA&utm_medium=api&utm_source=95749ce0&v=259424190E0CFE9ACD006F845AD1CC7882365586",
+      "status": "pending",
+      "notes": ""
+    }
+  ],
+  "countries": [
+    {
+      "name": "Australia",
+      "code": "au",
+      "id": "c8eb"
+    },
+    {
+      "name": "Austria",
+      "code": "at",
+      "id": "23a7"
+    },
+    {
+      "name": "Brazil",
+      "code": "br",
+      "id": "d37e"
+    },
+    {
+      "name": "Canada",
+      "code": "ca",
+      "id": "d592"
+    },
+    {
+      "name": "France",
+      "code": "fr",
+      "id": "a0e4"
+    },
+    {
+      "name": "Germany",
+      "code": "de",
+      "id": "7eac"
+    },
+    {
+      "name": "India",
+      "code": "in",
+      "id": "57a3"
+    },
+    {
+      "name": "Italy",
+      "code": "it",
+      "id": "5b3d"
+    },
+    {
+      "name": "Mexico",
+      "code": "mx",
+      "id": "d478"
+    },
+    {
+      "name": "Netherlands",
+      "code": "nl",
+      "id": "7f7a"
+    },
+    {
+      "name": "New Zealand",
+      "code": "nz",
+      "id": "105a"
+    },
+    {
+      "name": "Poland",
+      "code": "pl",
+      "id": "2fa6"
+    },
+    {
+      "name": "Singapore",
+      "code": "sg",
+      "id": "c3c6"
+    },
+    {
+      "name": "South Africa",
+      "code": "za",
+      "id": "9bd4"
+    },
+    {
+      "name": "Spain",
+      "code": "es",
+      "id": "274f"
+    },
+    {
+      "name": "Switzerland",
+      "code": "ch",
+      "id": "cd57"
+    },
+    {
+      "name": "United Kingdom",
+      "code": "gb",
+      "id": "2bcd"
+    },
+    {
+      "name": "United States",
+      "code": "us",
+      "id": "5e2f"
+    }
+  ]
 }

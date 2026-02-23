@@ -1,28 +1,32 @@
-import {inject, Injectable, signal} from '@angular/core';
-import {environment} from '../../../environments/environment.development';
-import {map, Observable} from 'rxjs';
-import {User} from '../../core/models/user.model';
-import {HttpClient} from '@angular/common/http';
-import {RegisterModel} from './models/register.model';
-import {LoginModel} from './models/login.model';
-import {Router} from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment.development';
+import { map, Observable } from 'rxjs';
+import { User } from '../../core/models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { RegisterModel } from './models/register.model';
+import { LoginModel } from './models/login.model';
+import { Store } from '@ngrx/store';
+import { selectCurrentUser, selectIsAuthenticated } from '../../core/store/selectors/auth.selectors';
+import { AuthPage } from '../../core/store/actions/auth.actions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
- private readonly apiUrl = `${environment.jsonServerUrl}/users`;
- private readonly http = inject(HttpClient);
- private router = inject(Router);
- currentUser = signal<User | null>(JSON.parse(localStorage.getItem('user') || 'null'));
+  private readonly apiUrl = `${environment.jsonServerUrl}/users`;
+  private readonly http = inject(HttpClient);
+  private store = inject(Store);
 
- getUsers():Observable<any>{
-   return this.http.get<User[]>(`${this.apiUrl}`);
- }
+  currentUser$ = this.store.select(selectCurrentUser);
+  isAuthenticated$ = this.store.select(selectIsAuthenticated);
 
- register(register:RegisterModel): Observable<User> {
-   return this.http.post<User>(`${this.apiUrl}`, register);
- }
+  getUsers(): Observable<any> {
+    return this.http.get<User[]>(`${this.apiUrl}`);
+  }
+
+  register(register: RegisterModel): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}`, register);
+  }
 
   login(request: LoginModel): Observable<User | null> {
     return this.http.get<User[]>(`${this.apiUrl}?email=${request.email}`).pipe(
@@ -31,9 +35,6 @@ export class AuthService {
 
         if (user && user.password === request.password) {
           const { password, ...userWithoutPassword } = user;
-
-          localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-          this.currentUser.set(userWithoutPassword);
           return userWithoutPassword as User;
         }
 
@@ -42,12 +43,11 @@ export class AuthService {
     );
   }
 
-  logout(){
-     localStorage.removeItem('user');
-     this.router.navigate(['/login'])
+  logout() {
+    this.store.dispatch(AuthPage.logout());
   }
 
-  isAuthenticate(){
-   return !!this.currentUser();
+  currentUser(): Observable<User | null> {
+    return this.currentUser$;
   }
 }

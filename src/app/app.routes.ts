@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
-import { provideState } from '@ngrx/store';
-import { favoriteJobsReducer } from './core/store/reducers/favoritesOffers.reducer';
-import { provideEffects } from '@ngrx/effects';
-import { FavoritesOffersEffects } from './core/store/effects/favoritesOffers.effect';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -12,16 +9,17 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./features/auth/components/login/login').then(m => m.Login)
-  },{
+  }, {
     path: 'jobs',
     loadChildren: () => import('./features/jobs/job.routers').then(m => m.jobRouter)
-  },{
+  },
+  {
     path: 'favorites',
     loadComponent: () => import('./features/favorites/components/favorites-list/favorites-list').then(m => m.FavoritesList),
-
-    // providers: [
-    //   provideState('favoritesOffers',favoriteJobsReducer),
-    //   provideEffects(FavoritesOffersEffects)
-    // ]
+    canActivate: [authGuard]
+  },{
+    path: 'applications',
+    loadComponent: () => import('./features/applications/components/application-list/application-list.component').then(m => m.ApplicationListComponent),
+    canActivate: [authGuard]
   }
 ];

@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FavoritesJobsState } from '../reducers/favoritesOffers.reducer';
 
-export const selectFavoritesJobsState = createFeatureSelector<FavoritesJobsState>('favoriteJobs');
+export const selectFavoritesJobsState = createFeatureSelector<FavoritesJobsState>('favoritesOffers');
 
 export const selectFavoriteJobs = createSelector(
   selectFavoritesJobsState,

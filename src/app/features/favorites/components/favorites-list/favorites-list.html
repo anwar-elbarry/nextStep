@@ -1,1 +1,52 @@
-<h1>favorites list </h1>
+@if(loading$ | async ){
+<div role='status' aria-label='loading'
+    class='flex flex-col items-center justify-center h-screen bg-gradient-to-br from-gray-50 to-gray-100'>
+    <!-- Spinner Container -->
+    <div class='relative'>
+        <!-- Outer Ring -->
+        <div class='w-20 h-20 border-4 border-gray-200 rounded-full'></div>
+
+        <!-- Spinning Ring -->
+        <div
+            class='absolute top-0 left-0 w-20 h-20 border-4 border-transparent border-t-blue-600 border-r-blue-600 rounded-full animate-spin'>
+        </div>
+
+        <!-- Inner Pulse -->
+        <div
+            class='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-blue-100 rounded-full animate-pulse'>
+        </div>
+    </div>
+
+    <!-- Loading Text -->
+    <div class='mt-6 text-center'>
+        <h3 class='text-lg font-semibold text-gray-800 mb-1'>Loading Favorites</h3>
+        <p class='text-sm text-gray-500 animate-pulse'>Please wait while we fetch your saved jobs...</p>
+    </div>
+</div>
+}
+@else if(error$ | async ){
+<p>error...</p>
+}
+@else{
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
+    @for(favorite of (jobs$ | async ); track favorite.id){
+    <app-favorites-card [favorite]="favorite" />
+    }
+    @empty {
+    <div class="col-span-full flex flex-col items-center justify-center min-h-[400px] bg-gray-50 rounded-lg p-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">No jobs found</h3>
+        <p class="text-gray-500 text-center max-w-md">
+            You haven't added any favorites yet
+        </p>
+    </div>
+    }
+    <!-- @if(jobs$ | async){
+    <app-pagination [currentPage]="page()" [hasMore]="jobsList().length > 0" (pageChange)="handlePageChange($event)" />
+    } -->
+</div>
+}

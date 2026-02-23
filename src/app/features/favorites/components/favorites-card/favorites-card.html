@@ -1,0 +1,19 @@
+<div (click)="getJobDetails(favorite()?.offerId || 'not-found')"
+    class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer relative w-full min-h-[200px] flex flex-col">
+
+    <!-- Remove from Favorites Button (Red Filled Bookmark) -->
+    <button (click)="removeFromFavorites(favorite()?.offerId || '', $event)"
+        class="absolute top-5 right-5 p-2 rounded-full hover:bg-gray-100 transition-all duration-200"
+        aria-label="Remove from favorites">
+          <i class="fas fa-heart" style="color: red;"></i>
+    </button>
+
+    <!-- Company Name -->
+    <h3 class="text-base font-semibold text-gray-900 mb-2 pr-8">{{ favorite()?.company }}</h3>
+
+    <!-- Job Title -->
+    <h4 class="text-xl font-bold text-gray-900 mb-3 leading-tight">{{ favorite()?.title }}</h4>
+
+    <!-- Location -->
+    <p class="text-sm text-gray-600 mb-3">{{ favorite()?.location }}</p>
+</div>
