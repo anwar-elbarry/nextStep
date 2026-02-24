@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextStep — Présentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-dark: #0a0a1a;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --accent: #6366f1;
+            --accent2: #818cf8;
+            --accent3: #a78bfa;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
+            --gradient2: linear-gradient(135deg, #0ea5e9, #6366f1);
+        }
+
+        html,
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            height: 100%;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* ─── Slide Container ─── */
+        .deck {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 80px;
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        .slide.exit {
+            opacity: 0;
+            transform: translateX(-60px);
+        }
+
+        /* ─── Background Glow ─── */
+        .glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(160px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-1 {
+            background: #6366f1;
+            top: -200px;
+            right: -100px;
+        }
+
+        .glow-2 {
+            background: #a78bfa;
+            bottom: -200px;
+            left: -100px;
+        }
+
+        /* ─── Typography ─── */
+        .slide-number {
+            position: absolute;
+            top: 32px;
+            left: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent2);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-dim);
+            font-weight: 400;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .small-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent2);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* ─── Cards Grid ─── */
+        .cards {
+            display: grid;
+            gap: 20px;
+            margin-top: 36px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .cards-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .cards-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .cards-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .card i,
+        .card .icon {
+            font-size: 2rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        /* ─── Icon Colors ─── */
+        .icon-indigo {
+            color: #6366f1;
+        }
+
+        .icon-purple {
+            color: #a78bfa;
+        }
+
+        .icon-sky {
+            color: #38bdf8;
+        }
+
+        .icon-emerald {
+            color: #34d399;
+        }
+
+        .icon-amber {
+            color: #fbbf24;
+        }
+
+        .icon-rose {
+            color: #fb7185;
+        }
+
+        .icon-teal {
+            color: #2dd4bf;
+        }
+
+        .icon-orange {
+            color: #fb923c;
+        }
+
+        /* ─── Tech Badges ─── */
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin-top: 32px;
+            max-width: 900px;
+        }
+
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px 22px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            transform: translateY(-3px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .tech-badge img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        /* ─── Architecture Diagram ─── */
+        .arch-container {
+            display: flex;
+            align-items: stretch;
+            gap: 28px;
+            margin-top: 32px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .arch-col {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .arch-col h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .arch-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .arch-col li {
+            font-size: 0.85rem;
+            padding: 6px 0;
+            color: var(--text-dim);
+        }
+
+        .arch-col li i {
+            margin-right: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* ─── Bullet list (minimal) ─── */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 28px;
+            text-align: left;
+            max-width: 700px;
+        }
+
+        .bullet-list li {
+            font-size: 1.1rem;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--text-dim);
+        }
+
+        .bullet-list li i {
+            color: var(--accent2);
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* ─── Navigation ─── */
+        .nav {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+            background: rgba(15, 15, 30, 0.8);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: transparent;
+            color: var(--text);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .nav button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav button:disabled:hover {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: var(--accent);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* ─── Conclusion specifics ─── */
+        .big-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .merci {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        /* ─── Logo for title slide ─── */
+        .logo-title {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        /* ─── Flow diagram ─── */
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flow-step {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 16px 22px;
+            text-align: center;
+            min-width: 130px;
+        }
+
+        .flow-step i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .flow-step span {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .flow-arrow {
+            color: var(--accent2);
+            font-size: 1.2rem;
+        }
+
+        /* ─── Keyboard hints ─── */
+        .key-hint {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <div class="deck" id="deck">
+
+        <!-- ══════════════════════ SLIDE 1: TITLE ══════════════════════ -->
+        <div class="slide active" data-slide="0">
+            <img src="public/nextStep.png" alt="NextStep Logo" class="logo-title" onerror="this.style.display='none'">
+            <h1><span class="gradient-text">NextStep</span></h1>
+            <p class="subtitle">Plateforme de recherche d'emploi & suivi de candidatures</p>
+            <div style="margin-top: 40px; color: var(--text-dim); font-size: 0.9rem;">
+                <p>Réalisé par <strong style="color: var(--text);">Anouar El Barry</strong></p>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 2: PLAN ══════════════════════ -->
+        <div class="slide" data-slide="1">
+            <span class="slide-number">02</span>
+            <h2>Plan</h2>
+            <ul class="bullet-list">
+                <li><i class="fa-solid fa-1"></i> Introduction</li>
+                <li><i class="fa-solid fa-2"></i> Problématique</li>
+                <li><i class="fa-solid fa-3"></i> Solution Proposée</li>
+                <li><i class="fa-solid fa-4"></i> Technologies Utilisées</li>
+                <li><i class="fa-solid fa-5"></i> Architecture du Projet</li>
+                <li><i class="fa-solid fa-6"></i> Fonctionnalités</li>
+                <li><i class="fa-solid fa-7"></i> Gestion d'État (NgRx)</li>
+                <li><i class="fa-solid fa-8"></i> API & Données</li>
+            </ul>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 3: INTRODUCTION ══════════════════════ -->
+        <div class="slide" data-slide="2">
+            <span class="slide-number">03 — Introduction</span>
+            <div class="small-label">Introduction</div>
+            <h2>Qu'est-ce que <span class="gradient-text">NextStep</span> ?</h2>
+            <p class="subtitle">
+                Une application web Angular qui permet de rechercher des offres d'emploi à travers le monde,
+                sauvegarder ses favoris et suivre ses candidatures.
+            </p>
+            <div class="cards cards-3" style="margin-top: 36px;">
+                <div class="card">
+                    <i class="fa-solid fa-magnifying-glass icon-sky"></i>
+                    <h3>Rechercher</h3>
+                    <p>Offres réelles dans 19 pays</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-heart icon-rose"></i>
+                    <h3>Sauvegarder</h3>
+                    <p>Favoris personnalisés</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-chart-line icon-emerald"></i>
+                    <h3>Suivre</h3>
+                    <p>Statut des candidatures</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 4: PROBLÉMATIQUE ══════════════════════ -->
+        <div class="slide" data-slide="3">
+            <span class="slide-number">04 — Problématique</span>
+            <div class="small-label">Problématique</div>
+            <h2>Les défis des <span class="gradient-text">chercheurs d'emploi</span></h2>
+            <div class="cards cards-2" style="margin-top: 32px;">
+                <div class="card">
+                    <i class="fa-solid fa-shuffle icon-amber"></i>
+                    <h3>Sources dispersées</h3>
+                    <p>Les offres sont éparpillées sur de nombreux sites différents</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-clipboard-list icon-rose"></i>
+                    <h3>Suivi difficile</h3>
+                    <p>Pas d'outil centralisé pour suivre l'état des candidatures</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-globe icon-sky"></i>
+                    <h3>Recherche internationale</h3>
+                    <p>Difficulté de chercher des emplois dans plusieurs pays à la fois</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-bookmark icon-purple"></i>
+                    <h3>Pas de sauvegarde</h3>
+                    <p>Impossible de retrouver facilement les offres intéressantes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 5: SOLUTION ══════════════════════ -->
+        <div class="slide" data-slide="4">
+            <span class="slide-number">05 — Solution Proposée</span>
+            <div class="small-label">Solution Proposée</div>
+            <h2><span class="gradient-text">NextStep</span> — Tout en un</h2>
+            <div class="flow">
+                <div class="flow-step">
+                    <i class="fa-solid fa-user-plus icon-indigo"></i>
+                    <span>Inscription</span>
+                </div>
+                <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                <div class="flow-step">
+                    <i class="fa-solid fa-magnifying-glass icon-sky"></i>
+                    <span>Recherche</span>
+                </div>
+                <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                <div class="flow-step">
+                    <i class="fa-solid fa-heart icon-rose"></i>
+                    <span>Favoris</span>
+                </div>
+                <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                <div class="flow-step">
+                    <i class="fa-solid fa-paper-plane icon-emerald"></i>
+                    <span>Candidature</span>
+                </div>
+                <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                <div class="flow-step">
+                    <i class="fa-solid fa-chart-line icon-amber"></i>
+                    <span>Suivi</span>
+                </div>
+            </div>
+            <p class="subtitle" style="margin-top: 32px;">
+                Une plateforme unique pour gérer tout le processus de recherche d'emploi
+            </p>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 6: TECHNOLOGIES ══════════════════════ -->
+        <div class="slide" data-slide="5">
+            <span class="slide-number">06 — Technologies</span>
+            <div class="small-label">Technologies Utilisées</div>
+            <h2><span class="gradient-text">Stack</span> Technique</h2>
+            <div class="tech-grid">
+                <div class="tech-badge">
+                    <img src="https://angular.dev/assets/icons/apple-touch-icon.png" alt="Angular">
+                    Angular 21
+                </div>
+                <div class="tech-badge">
+                    <img src="https://ngrx.io/assets/images/badge.svg" alt="NgRx">
+                    NgRx Store
+                </div>
+                <div class="tech-badge">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/512px-Tailwind_CSS_Logo.svg.png"
+                        alt="Tailwind">
+                    Tailwind CSS 4
+                </div>
+                <div class="tech-badge">
+                    <img src="https://www.typescriptlang.org/favicon-32x32.png" alt="TS">
+                    TypeScript 5.9
+                </div>
+                <div class="tech-badge">
+                    <img src="https://rxjs.dev/assets/images/favicons/favicon-32x32.png" alt="RxJS">
+                    RxJS
+                </div>
+                <div class="tech-badge">
+                    <i class="fa-solid fa-database icon-emerald" style="font-size:1.4rem;"></i>
+                    json-server
+                </div>
+                <div class="tech-badge">
+                    <i class="fa-solid fa-cloud icon-sky" style="font-size:1.4rem;"></i>
+                    Adzuna API
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 7: ARCHITECTURE ══════════════════════ -->
+        <div class="slide" data-slide="6">
+            <span class="slide-number">07 — Architecture</span>
+            <div class="small-label">Architecture</div>
+            <h2>Structure du <span class="gradient-text">Projet</span></h2>
+            <div class="arch-container">
+                <div class="arch-col" style="border-color: rgba(99,102,241,0.2);">
+                    <h3><i class="fa-solid fa-cube icon-indigo"></i> Core</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-shield-halved icon-indigo"></i> Guards (Auth)</li>
+                        <li><i class="fa-solid fa-filter icon-indigo"></i> Interceptors (Erreurs)</li>
+                        <li><i class="fa-solid fa-database icon-indigo"></i> Store NgRx</li>
+                        <li><i class="fa-solid fa-bell icon-indigo"></i> Services (Alertes)</li>
+                        <li><i class="fa-solid fa-table-columns icon-indigo"></i> Layouts (Header / Footer)</li>
+                    </ul>
+                </div>
+                <div class="arch-col" style="border-color: rgba(167,139,250,0.2);">
+                    <h3><i class="fa-solid fa-puzzle-piece icon-purple"></i> Features</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-lock icon-purple"></i> Auth (Login / Register)</li>
+                        <li><i class="fa-solid fa-house icon-purple"></i> Home</li>
+                        <li><i class="fa-solid fa-briefcase icon-purple"></i> Jobs (Recherche)</li>
+                        <li><i class="fa-solid fa-heart icon-purple"></i> Favorites</li>
+                        <li><i class="fa-solid fa-list-check icon-purple"></i> Applications</li>
+                        <li><i class="fa-solid fa-user icon-purple"></i> Profile</li>
+                    </ul>
+                </div>
+                <div class="arch-col" style="border-color: rgba(56,189,248,0.2);">
+                    <h3><i class="fa-solid fa-share-nodes icon-sky"></i> Shared</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-bell icon-sky"></i> Composant Alert</li>
+                        <li><i class="fa-solid fa-arrow-right-arrow-left icon-sky"></i> Pagination</li>
+                        <li><i class="fa-solid fa-clock icon-sky"></i> Pipe TimeAgo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 8: FONCTIONNALITÉS ══════════════════════ -->
+        <div class="slide" data-slide="7">
+            <span class="slide-number">08 — Fonctionnalités</span>
+            <div class="small-label">Fonctionnalités</div>
+            <h2>Ce que fait <span class="gradient-text">NextStep</span></h2>
+            <div class="cards cards-3">
+                <div class="card">
+                    <i class="fa-solid fa-lock icon-indigo"></i>
+                    <h3>Authentification</h3>
+                    <p>Inscription · Connexion · Guard</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-magnifying-glass icon-sky"></i>
+                    <h3>Recherche d'emploi</h3>
+                    <p>19 pays · Filtres · Pagination</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-columns icon-teal"></i>
+                    <h3>Master-Detail</h3>
+                    <p>Liste + Détails côte à côte</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-heart icon-rose"></i>
+                    <h3>Favoris</h3>
+                    <p>Sauvegarder · Supprimer</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-chart-line icon-emerald"></i>
+                    <h3>Suivi Candidatures</h3>
+                    <p>Pending · Accepted · Rejected</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-user-pen icon-amber"></i>
+                    <h3>Profil</h3>
+                    <p>Modifier · Supprimer le compte</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 9: NGRX ══════════════════════ -->
+        <div class="slide" data-slide="8">
+            <span class="slide-number">09 — NgRx</span>
+            <div class="small-label">Gestion d'État</div>
+            <h2>Architecture <span class="gradient-text">NgRx</span></h2>
+            <div class="flow" style="margin-top: 24px;">
+                <div class="flow-step" style="border-color: rgba(99,102,241,0.3);">
+                    <i class="fa-solid fa-bolt icon-indigo"></i>
+                    <span>Actions</span>
+                </div>
+                <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                <div class="flow-step" style="border-color: rgba(56,189,248,0.3);">
+                    <i class="fa-solid fa-gears icon-sky"></i>
+                    <span>Reducers</span>
+                </div>
+                <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                <div class="flow-step" style="border-color: rgba(52,211,153,0.3);">
+                    <i class="fa-solid fa-database icon-emerald"></i>
+                    <span>Store</span>
+                </div>
+                <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                <div class="flow-step" style="border-color: rgba(251,191,36,0.3);">
+                    <i class="fa-solid fa-filter icon-amber"></i>
+                    <span>Selectors</span>
+                </div>
+            </div>
+            <div style="margin-top: 12px; margin-bottom: 8px;">
+                <i class="fa-solid fa-arrow-down flow-arrow" style="font-size: 1rem;"></i>
+            </div>
+            <div class="flow-step"
+                style="border-color: rgba(167,139,250,0.3); display: inline-flex; gap: 10px; align-items: center;">
+                <i class="fa-solid fa-wand-magic-sparkles icon-purple"></i>
+                <span>Effects (Side Effects / API Calls)</span>
+            </div>
+            <div class="cards cards-4" style="margin-top: 28px;">
+                <div class="card">
+                    <h3 style="color: var(--accent2);">auth</h3>
+                    <p>Utilisateur connecté</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent2);">favoritesOffers</h3>
+                    <p>Offres sauvegardées</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent2);">applications</h3>
+                    <p>Candidatures suivies</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent2);">alerts</h3>
+                    <p>Notifications globales</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 10: API & DONNÉES ══════════════════════ -->
+        <div class="slide" data-slide="9">
+            <span class="slide-number">10 — API & Données</span>
+            <div class="small-label">API & Données</div>
+            <h2>Sources de <span class="gradient-text">Données</span></h2>
+            <div class="cards cards-2" style="margin-top: 28px; max-width: 800px;">
+                <div class="card" style="text-align: left;">
+                    <i class="fa-solid fa-cloud icon-sky" style="text-align:center;"></i>
+                    <h3>Adzuna API</h3>
+                    <p style="margin-top: 8px;">Offres d'emploi réelles</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 12px;">
+                        <li style="font-size: 0.8rem; color: var(--text-dim); padding: 4px 0;"><i
+                                class="fa-solid fa-check icon-emerald"
+                                style="margin-right: 6px; font-size: 0.7rem;"></i>19 pays supportés</li>
+                        <li style="font-size: 0.8rem; color: var(--text-dim); padding: 4px 0;"><i
+                                class="fa-solid fa-check icon-emerald"
+                                style="margin-right: 6px; font-size: 0.7rem;"></i>Recherche paginée</li>
+                        <li style="font-size: 0.8rem; color: var(--text-dim); padding: 4px 0;"><i
+                                class="fa-solid fa-check icon-emerald"
+                                style="margin-right: 6px; font-size: 0.7rem;"></i>Filtrage par mot-clé et lieu</li>
+                    </ul>
+                </div>
+                <div class="card" style="text-align: left;">
+                    <i class="fa-solid fa-database icon-emerald" style="text-align:center;"></i>
+                    <h3>json-server</h3>
+                    <p style="margin-top: 8px;">Backend REST local</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 12px;">
+                        <li style="font-size: 0.8rem; color: var(--text-dim); padding: 4px 0;"><i
+                                class="fa-solid fa-check icon-emerald"
+                                style="margin-right: 6px; font-size: 0.7rem;"></i>/users — Authentification</li>
+                        <li style="font-size: 0.8rem; color: var(--text-dim); padding: 4px 0;"><i
+                                class="fa-solid fa-check icon-emerald"
+                                style="margin-right: 6px; font-size: 0.7rem;"></i>/favoritesOffers — Favoris</li>
+                        <li style="font-size: 0.8rem; color: var(--text-dim); padding: 4px 0;"><i
+                                class="fa-solid fa-check icon-emerald"
+                                style="margin-right: 6px; font-size: 0.7rem;"></i>/applications — Candidatures</li>
+                        <li style="font-size: 0.8rem; color: var(--text-dim); padding: 4px 0;"><i
+                                class="fa-solid fa-check icon-emerald"
+                                style="margin-right: 6px; font-size: 0.7rem;"></i>/countries — Liste des pays</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════ SLIDE 12: MERCI ══════════════════════ -->
+        <div class="slide" data-slide="11">
+            <span class="slide-number">12</span>
+            <div class="big-icon">🎯</div>
+            <h1 class="merci"><span class="gradient-text">Merci !</span></h1>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button id="prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="dots" id="dots"></div>
+        <button id="next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div class="key-hint">← → ou cliquez pour naviguer</div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dots');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        let current = 0;
+
+        // Create dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        });
+
+        function updateSlides() {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'exit');
+                if (i === current) slide.classList.add('active');
+                else if (i < current) slide.classList.add('exit');
+            });
+
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === current);
+            });
+
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === slides.length - 1;
+        }
+
+        function changeSlide(dir) {
+            const next = current + dir;
+            if (next >= 0 && next < slides.length) {
+                current = next;
+                updateSlides();
+            }
+        }
+
+        function goToSlide(i) {
+            current = i;
+            updateSlides();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+            if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+            if (e.key === 'End') { e.preventDefault(); goToSlide(slides.length - 1); }
+        });
+    </script>
+
+</body>
+
+</html>
